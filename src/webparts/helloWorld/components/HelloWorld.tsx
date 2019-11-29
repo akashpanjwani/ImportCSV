@@ -7,7 +7,7 @@ import * as $ from 'jquery';
 import { sp, ItemAddResult } from "@pnp/sp";
 
 export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
-  
+
   public constructor(props: IHelloWorldProps) {
     super(props);
     this.state = {
@@ -17,8 +17,8 @@ export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
   }
 
   public handleData = data => {
-    this.setState({ data });
-
+    this.setState({ data:data });
+    $('.TrackMessage').empty();
     $.each(data, (e, val) => {
 
       // we can also use filter as a supported odata operation, but this will likely fail on large lists
@@ -27,6 +27,7 @@ export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
         if (allItems.length > 0) {
           $.each(allItems, (e1, val1) => {
             console.log("Update");
+            $('.TrackMessage').append("Record: "+val.RecordID+"<br/><p>Record is already Exist.<br/>Updated Successfully.<br/></p>");
             let list = sp.web.lists.getByTitle("test");
             list.items.getById(allItems[e1].Id).update({
               Title: val.RecordID,
@@ -44,6 +45,7 @@ export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
           });
         }
         else {
+          $('.TrackMessage').append("Record: "+val.RecordID+"<br/><p>Record is Not Exist.<br/>Created Successfully.<br/></p>");
           // add an item to the list
           sp.web.lists.getByTitle("test").items.add({
             Title: val.RecordID,
@@ -75,12 +77,19 @@ export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
       'Description', 'FullDescription', 'Severity', 'Status', 'AssignedTo', 'Tester', 'TestPhase'
     ];
     return (
-      <CsvParse
-        keys={keys}
-        onDataUploaded={this.handleData}
-        onError={this.handleError}
-        render={onChange => <input type="file" onChange={onChange} />}
-      />
+        <div>
+
+        <CsvParse
+          keys={keys}
+          onDataUploaded={this.handleData}
+          onError={this.handleError}
+          render={onChange => <input type="file" onChange={onChange} />}
+        />
+
+        <div className="TrackMessage"></div>
+       
+      </div>
+
     );
   }
 }
