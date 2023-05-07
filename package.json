@@ -27,7 +27,7 @@
     "@types/react-dom": "16.8.0",
     "@types/webpack-env": "1.13.1",
     "@vtex/react-csv-parse": "^3.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "office-ui-fabric-react": "6.143.0",
     "react": "16.7.0",
     "react-csv-reader": "^2.0.2",
